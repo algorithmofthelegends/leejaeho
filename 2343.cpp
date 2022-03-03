@@ -18,7 +18,7 @@ bool check(const ll &mid, const std::vector<ll> &v, const int &M, const int &N)
              * mid가 23일경우
              * 1 3 6 10 15 21까지 통과 28에서 걸림
              * 1. base를 한 인덱스 전으로 설정해 21로 설정
-             * 설정한 베이스로 28부터 다시 루프 돌기위해서 i를 한 인덱스 전으로 설정
+             * 2. 설정한 베이스로 28부터 다시 루프 돌기위해서 i를 한 인덱스 전으로 설정
              */
 
             if (i != 0)
