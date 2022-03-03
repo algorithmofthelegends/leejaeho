@@ -1,4 +1,3 @@
-*.vscode*
-*.swp
-*.cpp
-*.dSYM
+*
+
+!*.cpp
