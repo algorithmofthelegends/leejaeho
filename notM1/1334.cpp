@@ -3,6 +3,8 @@
 
 bool check(std::string& s) {
   int midIdx = s.size() / 2;
+
+  for(int i=0; i<midIdx; i++) if(s[i] != s[s.size()-1-i]) return false;
   return true;
 }
 
@@ -10,6 +12,7 @@ void plus(std::string& s, int index) {
   // return if new  digit should be created
   if(index < 0) {
     s = '1' + s;
+    return;
   }
 
   char cur = s[index];
@@ -30,7 +33,11 @@ int main(){
 
   while(true){
     plus(s, s.size()-1);
-    check(s);
+
+    if(check(s)) {
+      std::cout << s;
+      break;
+    }
   }
 
   return 0;
