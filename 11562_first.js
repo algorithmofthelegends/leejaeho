@@ -73,10 +73,10 @@ new Array(m).fill(0).forEach(() => {
 // };
 
 const footprint = new Array(n + 1).fill(0, 0, n + 1);
-let result = [];
+let result;
 const dfs = (node, dest, count) => {
   if (node === dest) {
-    result.push(count);
+    result = Math.min(result, count);
     return;
   }
 
@@ -101,9 +101,10 @@ input.forEach((value) => {
     // using bfs
     // console.log(bfs(u, v));
     // using dfs
-    dfs(u, v, 0);
-    console.log(result.sort()[0]);
-    result = [];
+    // initializing
+    result = 5000000000;
     footprint.fill(0, 0, n + 1);
+    dfs(u, v, 0);
+    console.log(result);
   }
 });
