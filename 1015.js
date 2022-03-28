@@ -1,6 +1,6 @@
 const localInput = `
-4
-2 1 3 1
+8
+4 1 6 1 3 6 1 4
 `;
 
 const input = (
@@ -13,17 +13,18 @@ const input = (
 
 const N = parseInt(input.shift());
 if (N !== 0) {
-  const A = input.shift().split(" ");
+  const A = input
+    .shift()
+    .trim()
+    .split(/\s+/)
+    .map((v) => +v);
   const B = Array.from(A);
   B.sort();
 
   const history = new Array(N).fill(0);
-  const result = [];
-  A.forEach((v) => {
+  A.forEach((v, i) => {
     const p = B.indexOf(v, history[v]);
     history[v] = p + 1;
-    result.push(p);
+    process.stdout.write(p + (i === A.length - 1 ? "" : " "));
   });
-
-  console.log(result.join(" "));
 }
