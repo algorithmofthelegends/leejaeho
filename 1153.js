@@ -1,5 +1,5 @@
 const localInput = `
-1000000
+38
 `;
 
 const input = +(
@@ -26,23 +26,67 @@ numbers.map((v, i) => {
     }
 
     primeNumber.push(i);
+    primeNumber.push(i);
+    primeNumber.push(i);
+    primeNumber.push(i);
   }
 
   return v;
 });
 
-const getPrimes = () => {
-  primeNumber.forEach((a) => {
-    primeNumber.forEach((b) => {
-      primeNumber.forEach((c) => {
-        primeNumber.forEach((d) => {
-          if (a + b + c + d === input) return [a, b, c, d];
-        });
-      });
-    });
-  });
+const nextPermutation = (l) => {
+  let firstDecreasing = -1;
+  for (let i = l.length - 2; i >= 0; i--)
+    if (l[i] < l[i + 1]) {
+      firstDecreasing = i;
+      break;
+    }
+
+  if (firstDecreasing === -1) return [l.reverse(), false];
+  else {
+    let nextBiggerIdx,
+      nextBiggerV = Number.MAX_SAFE_INTEGER;
+    for (let i = firstDecreasing + 1; i < l.length; i++) {
+      if (l[firstDecreasing] < l[i] && l[i] < nextBiggerV) {
+        nextBiggerV = l[i];
+        nextBiggerIdx = i;
+      }
+    }
+
+    l[nextBiggerIdx] = l[firstDecreasing];
+    l[firstDecreasing] = nextBiggerV;
+
+    return [
+      [
+        ...l.slice(0, firstDecreasing + 1),
+        ...l.slice(firstDecreasing + 1).reverse(),
+      ],
+      true,
+    ];
+  }
 };
 
-const result = getPrimes();
+let pem = new Array(primeNumber.length - 4).fill(0);
+pem.push(1);
+pem.push(1);
+pem.push(1);
+pem.push(1);
+
+let result;
+while (true) {
+  let t = [];
+  pem.forEach((v, i) => {
+    if (v === 1) t.push(primeNumber[i]);
+  });
+
+  if (t[0] + t[1] + t[2] + t[3] === input) {
+    result = t;
+    break;
+  }
+
+  const [nextL, check] = nextPermutation(pem);
+  if (check) pem = nextL;
+  else break;
+}
 
 console.log(result ? result.join(" ") : -1);
