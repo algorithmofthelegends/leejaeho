@@ -1,38 +1,6 @@
 const localInput = `
-6
+38
 `;
-
-const nextPermutation = (l) => {
-  let firstDecreasing = -1;
-  for (let i = l.length - 2; i >= 0; i--)
-    if (l[i] < l[i + 1]) {
-      firstDecreasing = i;
-      break;
-    }
-
-  if (firstDecreasing === -1) return [l.reverse(), false];
-  else {
-    let nextBiggerIdx,
-      nextBiggerV = Number.MAX_SAFE_INTEGER;
-    for (let i = firstDecreasing + 1; i < l.length; i++) {
-      if (l[firstDecreasing] < l[i] && l[i] < nextBiggerV) {
-        nextBiggerV = l[i];
-        nextBiggerIdx = i;
-      }
-    }
-
-    l[nextBiggerIdx] = l[firstDecreasing];
-    l[firstDecreasing] = nextBiggerV;
-
-    return [
-      [
-        ...l.slice(0, firstDecreasing + 1),
-        ...l.slice(firstDecreasing + 1).reverse(),
-      ],
-      true,
-    ];
-  }
-};
 
 const input = +(
   process.platform === "linux"
@@ -58,26 +26,27 @@ numbers.map((v, i) => {
     }
 
     primeNumber.push(i);
-    primeNumber.push(i);
-    primeNumber.push(i);
-    primeNumber.push(i);
   }
 
   return v;
 });
 
+let result = [];
+if (input < 8) console.log(-1);
+else {
+  result.push(2);
+  result.push(input % 2 === 0 ? 2 : 3);
+  const N = input - (input % 2 === 0 ? 4 : 5);
 
-
-let result;
-while (true) {
-  if (primeNumber[0] + primeNumber[1] + primeNumber[2] + primeNumber[3] === input) {
-    result = primeNumber.slice(0, 4);
-    break;
+  for (let i = 0; i < primeNumber.length; i++) {
+    const curPrime = primeNumber[i];
+    const sub = N - curPrime;
+    if (primeNumber.includes(sub)) {
+      result.push(curPrime);
+      result.push(sub);
+      break;
+    }
   }
-
-  const [nextPrimeNumber, check] = nextPermutation(primeNumber);
-  if (check) primeNumber = nextPrimeNumber;
-  else break;
 }
 
-console.log(result ? result.join(" ") : -1);
+console.log(result.join(" "));
