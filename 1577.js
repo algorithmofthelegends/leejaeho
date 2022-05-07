@@ -1,9 +1,10 @@
 ///////////////// input //////////////////
 const localInput = `
-6 6
-2
-0 0 0 1
-6 6 5 6
+2 2
+3
+0 0 1 0
+1 2 2 2
+1 1 2 1
 `;
 
 const input = (
@@ -95,4 +96,4 @@ const footprint = new Array(N + 1).fill(0).map((v) => new Array(M + 1).fill(0));
 
 bfs(road, footprint, [0, 0]);
 
-console.log(road[N][M].toString());
+console.log(N === 0 && M === 0 ? 0 : road[N][M].toString());
