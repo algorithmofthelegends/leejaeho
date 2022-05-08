@@ -35,7 +35,12 @@ const updateRemain = (remain, nadori, toggle) => {
 };
 
 ///////////////// logic //////////////////
-
+/**
+ * 2 2 1
+ * 3 2
+ * 2
+ * false
+ */
 let remain = 0;
 while (nadori.length) {
 	remain = nadori.pop();
