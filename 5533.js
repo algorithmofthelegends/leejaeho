@@ -29,6 +29,7 @@ while (N--)
 
 for (let i = 0; i < 3; i++) {
   board.forEach((v, index) => {
+    // 같은 수가 없으면 결과에 입력
     if (
       board.every((ev, eIndex) => {
         return index === eIndex ? true : v[i] ^ ev[i];
