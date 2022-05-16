@@ -32,8 +32,8 @@ for (let i = 0; i < M; i++) {
     .shift()
     .split(/\s+/)
     .map((v) => +v);
-  graph[u][v] = d;
-  graph[v][u] = d;
+  graph[u][v] = graph[u][v] === 0 ? d : Math.min(graph[u][v], d);
+  graph[v][u] = graph[v][u] === 0 ? d : Math.min(graph[v][u], d);
 }
 
 ///////////////// function //////////////////
@@ -43,34 +43,34 @@ for (let i = 0; i < M; i++) {
 const dijkstraAlgorithm = (graph, origin) => {
   const dijkstra = new Array(N + 1).fill(Number.MAX_SAFE_INTEGER);
   const prev = new Array(N + 1).fill(0);
-  const check = new Array(N + 1).fill(0);
   // set origin value minimum
   dijkstra[origin] = 0;
 
   // check visitor
-  for (let i = 1; i <= N; i++) check[i] = 1;
+  const q = new Set();
+  for (let i = 1; i <= N; i++) q.add(i);
 
-  while (check.some((v) => v === 1)) {
+  while (q.size) {
     // get minimum node
     const [value, node] = dijkstra.reduce((p, c, i) => {
       // initial value
       const [prev, idx] = p;
       return p.length === 0
-        ? check[i] === 1
+        ? q.has(i)
           ? [c, i]
           : []
-        : prev > c && check[i] === 1
+        : prev > c && q.has(i)
         ? [c, i]
         : [prev, idx];
     }, []);
-    check[node] = 0;
+    q.delete(node);
 
     // traverse
     graph[node].forEach((path, destination) => {
       if (
         path !== 0 &&
         gender[node] !== gender[destination] &&
-        check[destination] === 1
+        q.has(destination)
       ) {
         const alt = dijkstra[node] + graph[node][destination];
         if (alt < dijkstra[destination]) {
@@ -85,7 +85,7 @@ const dijkstraAlgorithm = (graph, origin) => {
 };
 
 ///////////////// logic //////////////////
-let result = Number.MAX_SAFE_INTEGER;
+let result = -1;
 
 for (let origin = 1; origin <= N; origin++) {
   const [prev, dijkstra] = dijkstraAlgorithm(graph, origin);
@@ -102,8 +102,13 @@ for (let origin = 1; origin <= N; origin++) {
       target = prev[target];
     }
 
-    if (possibility.every((v) => v === 0) && result > dijkstra[i])
-      result = dijkstra[i];
+    if (possibility.every((v) => v === 0))
+      result =
+        result === -1
+          ? dijkstra[i]
+          : result > dijkstra[i]
+          ? dijkstra[i]
+          : result;
   }
 }
 
