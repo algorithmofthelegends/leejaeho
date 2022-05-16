@@ -37,37 +37,74 @@ for (let i = 0; i < M; i++) {
 }
 
 ///////////////// function //////////////////
-const dijkstraAlgorithm = (graph, origin) => {
-  const dijkstra = new Array(N + 1).fill(-1);
-
-  const q = [];
-  q.push([origin, 0]);
-  dijkstra[origin] = 0;
-
-  graph[origin].forEach((path, destination) => {
-    if (path !== 0 && gender[origin] !== gender[destination])
-      dijkstra[destination] = Math.max(
-        dijkstra[destination],
-        dijkstra[origin] + graph[origin][destination]
-      );
-  });
-};
-
-///////////////// logic //////////////////
-
 /**
  * dijkstra algorithm
  */
+const dijkstraAlgorithm = (graph, origin) => {
+  const dijkstra = new Array(N + 1).fill(Number.MAX_SAFE_INTEGER);
+  const prev = new Array(N + 1).fill(0);
+  const check = new Array(N + 1).fill(0);
+  // set origin value minimum
+  dijkstra[origin] = 0;
+
+  // check visitor
+  for (let i = 1; i <= N; i++) check[i] = 1;
+
+  while (check.some((v) => v === 1)) {
+    // get minimum node
+    const [value, node] = dijkstra.reduce((p, c, i) => {
+      // initial value
+      const [prev, idx] = p;
+      return p.length === 0
+        ? check[i] === 1
+          ? [c, i]
+          : []
+        : prev > c && check[i] === 1
+        ? [c, i]
+        : [prev, idx];
+    }, []);
+    check[node] = 0;
+
+    // traverse
+    graph[node].forEach((path, destination) => {
+      if (
+        path !== 0 &&
+        gender[node] !== gender[destination] &&
+        check[destination] === 1
+      ) {
+        const alt = dijkstra[node] + graph[node][destination];
+        if (alt < dijkstra[destination]) {
+          dijkstra[destination] = alt;
+          prev[destination] = node;
+        }
+      }
+    });
+  }
+
+  return [prev, dijkstra];
+};
+
+///////////////// logic //////////////////
+let result = Number.MAX_SAFE_INTEGER;
 
 for (let origin = 1; origin <= N; origin++) {
-  // have path and not same gender save dijkstra value
-  graph[origin].forEach((path, destination) => {
-    if (path !== 0 && gender[origin] !== gender[destination])
-      dijkstra[destination] = Math.max(
-        dijkstra[destination],
-        dijkstra[origin] + graph[origin][destination]
-      );
-  });
+  const [prev, dijkstra] = dijkstraAlgorithm(graph, origin);
+
+  for (let i = 1; i <= N; i++) {
+    if (i === origin) continue;
+
+    const possibility = new Array(N + 1).fill(1);
+    possibility[0] = 0;
+    let target = i;
+
+    while (target) {
+      possibility[target] = 0;
+      target = prev[target];
+    }
+
+    if (possibility.every((v) => v === 0) && result > dijkstra[i])
+      result = dijkstra[i];
+  }
 }
 
-console.log("test");
+console.log(result);
