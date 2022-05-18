@@ -17,6 +17,7 @@ const [N, X] = input
   .split(/\s+/)
   .map((v) => +v);
 
+// 9 9 5 4 3 2 1
 const views = input
   .shift()
   .split(/\s+/)

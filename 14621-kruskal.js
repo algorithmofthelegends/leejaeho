@@ -1,3 +1,4 @@
+const fs = require("fs");
 ///////////////// classes //////////////////
 const DisjointSets = ((N) => {
   const disjointSets = function (N) {
@@ -42,6 +43,14 @@ const Graph = ((N, M) => {
     this.gender = gender;
   };
 
+  /**
+   * 
+sorted: 3,3,4 5,4,2 5,5,2 7,5,4 10,1,3 10,2,5 12,1,2 
+u: 5, v: 2, d: 5 
+u: 5, v: 4, d: 7 
+u: 1, v: 3, d: 10 
+u: 1, v: 2, d: 12 
+   */
   graph.prototype.findKruskal = function () {
     // sorting
     this.edges.sort((a, b) => a[0] - b[0]);
@@ -56,6 +65,7 @@ const Graph = ((N, M) => {
       const set_v = this.sets.find(v);
 
       if (set_u !== set_v) {
+        fs.appendFileSync("14621-kruskal.txt", `u: ${u}, v: ${v}, d: ${d} \n`);
         this.result += d;
         this.edgeCount++;
         this.sets.merge(set_u, set_v);

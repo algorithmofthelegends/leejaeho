@@ -38,6 +38,7 @@ for (let i = 0; i < M; i++) {
 
 let result = -1;
 ///////////////// function //////////////////
+// dfs-> 1-> 2-> 5-> 4-> 3-> 2-> 1-> 3-> 5-> 4-> 3-> 1-> 2-> 5-> 4-> 4-> 5-> 2-> 1-> 3-> 5-> 2-> 1-> 3-> 4
 const dfs = (graph, node, footprint, sum) => {
   footprint[node] = 1;
   if (footprint.every((v) => v === 1))

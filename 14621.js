@@ -87,9 +87,22 @@ const dijkstraAlgorithm = (graph, origin) => {
 ///////////////// logic //////////////////
 let result = -1;
 
+const fs = require("fs");
+/**
+ * 
+1: 
+	 prev 0 	 dijkstra 0 	 prev 1 	 dijkstra 12 	 prev 1 	 dijkstra 10 	 prev 5 	 dijkstra 24 	 prev 2 	 dijkstra 17 
+2: 
+	 prev 2 	 dijkstra 12 	 prev 0 	 dijkstra 0 	 prev 1 	 dijkstra 22 	 prev 5 	 dijkstra 12 	 prev 2 	 dijkstra 5 
+3: 
+	 prev 3 	 dijkstra 10 	 prev 1 	 dijkstra 22 	 prev 0 	 dijkstra 0 	 prev 5 	 dijkstra 34 	 prev 2 	 dijkstra 27 
+4: 
+	 prev 2 	 dijkstra 24 	 prev 5 	 dijkstra 12 	 prev 1 	 dijkstra 34 	 prev 0 	 dijkstra 0 	 prev 4 	 dijkstra 7 
+5: 
+	 prev 2 	 dijkstra 17 	 prev 5 	 dijkstra 5 	 prev 1 	 dijkstra 27 	 prev 5 	 dijkstra 7 	 prev 0 	 dijkstra 0 
+ */
 for (let origin = 1; origin <= N; origin++) {
   const [prev, dijkstra] = dijkstraAlgorithm(graph, origin);
-
   for (let i = 1; i <= N; i++) {
     if (i === origin) continue;
 
@@ -110,6 +123,7 @@ for (let origin = 1; origin <= N; origin++) {
           ? dijkstra[i]
           : result;
   }
+  fs.appendFileSync("14621.txt", `\n`);
 }
 
 console.log(result);
