@@ -1,8 +1,10 @@
 *
+!/**/
+!*.*
 
-!*.cpp
-
-!notM1*
-!*.js
-
-!*.go
+*.swp
+*.vscode
+*.txt
+*.dSYM
+*.mod
+*.work
