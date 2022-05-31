@@ -1,9 +1,16 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
+	"strconv"
+	"strings"
 )
+
+/*
+1차 permutation
+첫번째 문제 , 모든 케이스를 찾을 수 없음
+두번째 문제 , 모든 케이스를 찾도록 자료구조 활용하면 시간초과
+*/
 
 // func prevPermutation(l *[]int) *[]int {
 // 	i := len(*l) - 2
@@ -103,24 +110,91 @@ import (
 // 	}
 // }
 
-func main() {
-	var N, M byte
-	fmt.Scanf("%d %d", &N, &M)
+/*
+2차 DFS
+시간초과
+*/
+// func dfs(l *[]byte, parents *[]byte, footprint *[]bool, M byte) {
+// 	if len(*parents) == int(M) {
+// 		for i, v := range *parents {
+// 			fmt.Print(v)
+// 			if i == len(*parents)-1 {
+// 				fmt.Println("")
+// 			} else {
+// 				fmt.Print(" ")
+// 			}
+// 		}
 
-	result := make([][]byte, 0)
+// 		return
+// 	}
+
+// 	for i, v := range *l {
+// 		if !(*footprint)[i] {
+// 			(*footprint)[i] = true
+// 			tmp := append(*parents, v)
+// 			dfs(l, &tmp, footprint, M)
+// 			(*footprint)[i] = false
+// 		}
+// 	}
+
+// 	return
+// }
+
+// func main() {
+// 	var N, M byte
+// 	fmt.Scanf("%d %d", &N, &M)
+
+// 	nums := make([]byte, N)
+
+// 	for i := range nums {
+// 		nums[i] = byte(i + 1)
+// 	}
+
+// 	for i, v := range nums {
+// 		parents := make([]byte, 0)
+// 		parents = append(parents, v)
+// 		footprint := make([]bool, N)
+// 		footprint[i] = true
+// 		dfs(&nums, &parents, &footprint, M)
+// 	}
+// }
+
+/*
+3번째 저번주 골드문제처럼
+*/
+func main() {
+	var N, M int
+	fmt.Scanf("%d %d", &N, &M)
+	result := make([][]string, M)
 
 	for i := range result {
-		tmp := make([]byte, 0)
-		for j := byte(1); j <= N; j++ {
-			if i == 0 {
-				tmp = append(tmp, j)
-			} else {
-				if bytes.Contains(result[i-1], []byte{j}) {
-					tmp = append(tmp)
+		if i == 0 {
+			tmp := make([]string, N)
+			for j := 0; j < N; j++ {
+				tmp[j] = strconv.Itoa(j + 1)
+			}
 
+			result[i] = tmp
+		} else {
+			tmp := make([]string, 0)
+			for j := 0; j < N; j++ {
+				curChar := strconv.Itoa(j + 1)
+
+				for k := range result[i-1] {
+					pop := result[i-1][k]
+
+					if !strings.Contains(pop, curChar) {
+						tmp = append(tmp, curChar+pop)
+					}
 				}
 			}
+
+			result[i] = tmp
 		}
-		result = append(result, tmp)
+	}
+
+	for _, v := range result[M-1] {
+		s := strings.Split(v, "")
+		fmt.Println(strings.Join(s, " "))
 	}
 }
