@@ -23,6 +23,7 @@ int main()
 
   while (true)
   {
+    std::string answer;
     std::getline(std::cin, temp);
     if (temp == "end")
       break;
@@ -92,11 +93,11 @@ int main()
         ++wresult;
 
       // 3. check cross
-      if ((i == 1) || (i == 2))
+      if (i == 1)
         continue;
 
       check = 0;
-      for (int j = i; j < 9; j += 4)
+      for (int j = i; j < 9 - i; j += (4 - i))
       {
         if (map[j] == -1)
         {
@@ -117,27 +118,30 @@ int main()
     // check map is filled
     if (white + black == 9)
     {
-      if (((white + 1) == black) && ((bresult + wresult) <= 1))
+      if ((white + 1) == black)
+      {
         /**
          * @example
          * XOXOXOXOX
          */
-        std::cout << "valid" << std::endl;
+        if (!wresult)
+          answer = "valid";
+        else
+          answer = "invalid";
+      }
+      /**
+       * @example
+       * OXOXOXOXO
+       * XXXOOOXXO
+       */
       else
-        /**
-         * @example
-         * OXOXOXOXO
-         * XXXOOOXXO
-         */
-        std::cout << "invalid" << std::endl;
-
-      continue;
+        answer = "invalid";
     }
     else
     {
       // map is not filled
-      // if finish line is one
-      if ((bresult + wresult) == 1)
+      // if finish line is more than one
+      if ((bresult && wresult == 0) || (bresult == 0 && wresult))
       {
         // if stone isn't balance it's invalid
         if ((wresult && (white == black)) || (bresult && ((white + 1) == black)))
@@ -146,15 +150,14 @@ int main()
            * .XXX.XOOO
            * XO.OX...X
            */
-          std::cout << "valid" << std::endl;
+          answer = "valid";
         else
           /**
            * @example
            * OX.XO...O
            */
-          std::cout << "invalid" << std::endl;
+          answer = "invalid";
       }
-      // if finish line more than one it's not valid
       else
       {
         /**
@@ -162,9 +165,10 @@ int main()
          * X.OO..X..
          * XXXOOO...
          */
-        std::cout << "invalid" << std::endl;
+        answer = "invalid";
       }
     }
+    std::cout << answer << std::endl;
   }
 
   return 0;
